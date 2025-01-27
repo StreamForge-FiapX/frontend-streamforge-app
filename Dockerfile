@@ -18,7 +18,7 @@ RUN npm run build --prod
 FROM nginx:1.25-alpine
 
 # Copy the built Angular app from the builder stage
-COPY --from=builder /app/dist/streamforge /usr/share/nginx/html
+COPY --from=builder /app/dist/fiapx /usr/share/nginx/html
 
 # Expose the default port for Nginx
 EXPOSE 80
