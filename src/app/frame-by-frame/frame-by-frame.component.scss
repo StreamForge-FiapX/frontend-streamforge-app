@@ -1,0 +1,48 @@
+.upload-container {
+    max-width: 700px;
+    margin: 5% auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .file-upload {
+        margin-top: 20px;
+
+        .btn-primary {
+            background-color: #6c63ff;
+            border-color: #6c63ff;
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: #5548d6;
+        }
+
+        .file-info {
+            p {
+                margin: 10px 0;
+                font-size: 1.1rem;
+            }
+
+            .btn-success {
+                padding: 10px 30px;
+                font-size: 1rem;
+                border-radius: 8px;
+            }
+        }
+    }
+
+    .alert {
+        font-size: 1.1rem;
+        border-radius: 8px;
+    }
+}

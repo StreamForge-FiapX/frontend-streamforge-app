@@ -1,0 +1,35 @@
+.custom-navbar {
+    background: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem;
+
+    .navbar-brand {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #4A4A4A;
+
+        img {
+            height: 45px;
+        }
+
+        .brand-text {
+            font-size: 1.4rem;
+            color: #ff5e78;
+        }
+    }
+
+    .logout-btn {
+        background: linear-gradient(to right, #ff5e78, #ff2e63);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: linear-gradient(to right, #ff2e63, #ff5e78);
+            transform: scale(1.05);
+        }
+    }
+}

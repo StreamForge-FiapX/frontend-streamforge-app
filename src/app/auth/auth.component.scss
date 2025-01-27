@@ -1,0 +1,65 @@
+.login-container {
+    background-color: #f4f6f9;
+    height: 100vh;
+    overflow: hidden;
+
+    .login-card {
+        width: 80%; // Tornar responsivo
+        max-width: 1100px;
+        height: 80%; // Evitar ultrapassar a tela
+        max-height: 600px;
+        display: flex;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+        .left-side {
+            flex: 1;
+            background: linear-gradient(to bottom right, #fa2075, #951b72);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                max-width: 100%;
+                max-height: 100%; // Garante que a imagem se ajuste
+                object-fit: contain;
+            }
+        }
+
+        .right-side {
+            flex: 1;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+
+            img {
+                max-width: 250px; // Define um tamanho máximo para a imagem
+                width: auto;
+                height: auto;
+            }
+
+            h1 {
+                color: #333;
+                font-weight: 700;
+                margin-top: 1.5rem;
+            }
+
+            p {
+                color: #666;
+                margin-bottom: 2rem;
+            }
+
+            .btn-primary {
+                width: 80%;
+                max-width: 300px;
+                border-radius: 25px;
+                padding: 15px;
+            }
+        }
+
+    }
+}

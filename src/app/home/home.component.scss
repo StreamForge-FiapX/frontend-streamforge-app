@@ -1,0 +1,42 @@
+.home-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .option-card {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        border-radius: 15px;
+        min-height: 250px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+
+        &:hover {
+            transform: translateY(-10px);
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+
+        // Corrigido para degradê
+        &.frame {
+            background: linear-gradient(to bottom right, #fa2075, #951b72);
+            color: white;
+        }
+
+        &.my-frames {
+            background: linear-gradient(to bottom right, #fa2075, #951b72);
+            color: white;
+        }
+    }
+}

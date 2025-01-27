@@ -1,0 +1,24 @@
+<div class="upload-container text-center">
+    <h1>Upload de Vídeo - Frame by Frame</h1>
+    <p>Selecione um vídeo para extrair frames.</p>
+
+    <div class="file-upload">
+        <input type="file" id="fileInput" (change)="handleFileInput($event)" accept="video/mp4" hidden />
+        <label for="fileInput" class="btn btn-primary">Escolher Arquivo</label>
+
+        <div *ngIf="selectedFile" class="file-info mt-3">
+            <p>Arquivo selecionado: {{ selectedFile.name }}</p>
+            <button class="btn btn-success mt-2" (click)="uploadFile()" [disabled]="!selectedFile">
+                Upload
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="uploadSuccess" class="alert alert-success mt-4">
+        Upload concluído com sucesso!
+    </div>
+
+    <div *ngIf="uploadError" class="alert alert-danger mt-4">
+        {{ uploadError }}
+    </div>
+</div>
