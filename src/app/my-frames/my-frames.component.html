@@ -16,7 +16,7 @@
                 <td>{{ translateStatus(frame.Status) }}</td>
                 <td>{{ formatDate(frame.UploadTimestamp) }}</td>
                 <td>
-                    <button *ngIf="frame.Status === 'frames_ready'" (click)="downloadZip(frame)"
+                    <button *ngIf="frame.Status === 'FINALIZADO'" (click)="downloadZip(frame)"
                         class="btn btn-outline-primary btn-sm">
                         Baixar
                     </button>

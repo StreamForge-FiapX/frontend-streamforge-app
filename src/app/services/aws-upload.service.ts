@@ -19,7 +19,7 @@ export class AwsUploadService {
   }
 
   async uploadVideo(file: File, email: string): Promise<void> {
-    const bucketName = 'uploaded-video-bckt';
+    const bucketName = 'video-uploaded';
     const datePath = new Date().toISOString().split('T')[0];
     const key = `${email}/${datePath}/${file.name}`;
 

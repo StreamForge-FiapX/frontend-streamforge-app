@@ -15,26 +15,28 @@ spec:
         app: streamforge-frontend
     spec:
       containers:
-        - name: streamforge-frontend
-          image: 307946636040.dkr.ecr.sa-east-1.amazonaws.com/streamforge-frontend:latest
-          ports:
-            - containerPort: 80
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 15
-            periodSeconds: 20
+      - name: streamforge-frontend
+        image: 307946636040.dkr.ecr.sa-east-1.amazonaws.com/streamforge-frontend:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      imagePullSecrets:
+      - name: ecr-secret

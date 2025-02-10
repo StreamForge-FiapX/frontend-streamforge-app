@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
 import { environment } from '../../environments/environment';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-my-frames',
@@ -11,8 +12,10 @@ import { environment } from '../../environments/environment';
   imports: [CommonModule]
 })
 export class MyFramesComponent implements OnInit {
+  private oidcSecurityService = inject(OidcSecurityService);
   frames: any[] = [];
   nextPageToken: string | null = null;
+  userEmail: string | null = null;  // Armazena o e-mail do usuário autenticado
 
   lambdaClient: LambdaClient;
 
@@ -27,20 +30,32 @@ export class MyFramesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadFrames();
+    this.oidcSecurityService.userData$.subscribe((user) => {
+      if (user?.userData?.email) {
+        this.userEmail = user.userData.email;
+        this.loadFrames(); // Só carrega os frames após obter o e-mail do usuário
+      } else {
+        console.error('Usuário não autenticado ou e-mail não encontrado.');
+      }
+    });
   }
 
   async loadFrames(): Promise<void> {
+    if (!this.userEmail) {
+      console.warn("Tentativa de carregar frames sem e-mail do usuário.");
+      return;
+    }
+
     const payload = {
       queryStringParameters: {
-        UserEmail: 'raul.de.souza@oracle.com',
+        UserEmail: this.userEmail,  // Usa o e-mail do usuário autenticado
         Limit: '5',
         ...(this.nextPageToken && { LastEvaluatedKey: this.nextPageToken })
       }
     };
 
     const params = new InvokeCommand({
-      FunctionName: 'arn:aws:lambda:sa-east-1:307946636040:function:getVideo2FrameHist',
+      FunctionName: 'arn:aws:lambda:sa-east-1:307946636040:function:ms-video2framehist-app',
       Payload: JSON.stringify(payload)
     });
 
@@ -62,14 +77,14 @@ export class MyFramesComponent implements OnInit {
   async downloadZip(frame: any): Promise<void> {
     const payload = {
       queryStringParameters: {
-        S3Bucket: "bucket-chunk-frame",
-        S3Path: frame.S3ObjectKey.replace("@", "%40").replace(frame.FileName, ""), // Caminho base
+        S3Bucket: "frames-chunks-video",
+        S3Path: `dev.raulsouza@gmail.com/${frame.UploadTimestamp.split("T")[0]}/${frame.FileName}/`, // Adicionando corretamente o título do vídeo
         FileName: frame.FileName.replace(".mp4", "") // Nome base do ZIP
       }
     };
 
     const params = new InvokeCommand({
-      FunctionName: 'arn:aws:lambda:sa-east-1:307946636040:function:generateZipDownload',
+      FunctionName: 'arn:aws:lambda:sa-east-1:307946636040:function:ms-generatezipdownload-app',
       Payload: JSON.stringify(payload),
     });
 
@@ -94,20 +109,34 @@ export class MyFramesComponent implements OnInit {
   }
 
   formatDate(timestamp: string): string {
-    const year = timestamp.substring(0, 4);
-    const month = timestamp.substring(4, 6);
-    const day = timestamp.substring(6, 8);
-    const hours = timestamp.substring(9, 11);
-    const minutes = timestamp.substring(11, 13);
+    const date = new Date(timestamp);
 
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
+    if (isNaN(date.getTime())) {
+      console.warn("Data inválida recebida:", timestamp);
+      return "Data inválida";
+    }
+
+    // Formata diretamente para o fuso horário de Brasília (America/Sao_Paulo)
+    return new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date);
   }
 
+
+
+
   translateStatus(status: string): string {
-    if (status === 'frames_ready') {
+    if (status === 'FINALIZADO') {
       return 'Pronto';
-    } else if (status === 'uploaded') {
+    } else if (status === 'EM PROGRESSO') {
       return 'Em Processamento';
+    } else if (status === 'INICIADO') {
+      return 'Iniciado';
     } else {
       return 'Desconhecido';
     }
